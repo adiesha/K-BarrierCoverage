@@ -1,6 +1,7 @@
 import networkx as nx
 import numpy as np
 from scipy.spatial import KDTree
+import matplotlib.pyplot as plt
 
 
 class ResidualGraph:
@@ -32,27 +33,26 @@ class ResidualGraph:
                 self.Gp.add_edge(len(self.data) + index, n)
             index = index + 1
 
-        sn = 2 * len(self.data) + 2 - 1 - 1
-        tn = 2 * len(self.data) + 2 - 1
-        neighbors = self.tree.query_ball_point(self.s, r=self.k)
-        # print(neighbors)
-        for n in neighbors:
-            self.Gp.add_edge(sn, n)
+        un = 2 * len(self.data) + 2 - 1 - 1
+        vn = 2 * len(self.data) + 2 - 1
 
-        neighbors = self.tree.query_ball_point(self.t, r=self.k)
-        # print(neighbors)
-        for n in neighbors:
-            self.Gp.add_edge(len(self.data) + n, tn)
+        # neighbors = self.tree.query_ball_point(self.s, r=self.k)
+        index = 0
+        for p in self.data:
+            if p[0] - self.s <= self.k / 2:
+                print(p)
+                self.Gp.add_edge(un, index)
 
-        # nx.draw_networkx(self.Gp, edge_color='black')
-        # plt.draw()
-        # plt.show()
+            if self.t - p[0] <= self.k / 2:
+                print(p)
+                self.Gp.add_edge(len(self.data) + index, vn)
+            index = index + 1
 
         self.residualG = self.Gp.copy()
-        # print(list(nx.node_disjoint_paths(self.Gp, sn, tn)))
-        # print(len(list(nx.node_disjoint_paths(self.Gp, sn, tn))))
+        # print(list(nx.node_disjoint_paths(self.Gp, un, vn)))
+        # print(len(list(nx.node_disjoint_paths(self.Gp, un, vn))))
 
-        vertex_disjoint_paths = list(nx.node_disjoint_paths(self.Gp, sn, tn))
+        vertex_disjoint_paths = list(nx.node_disjoint_paths(self.Gp, un, vn))
         for path in vertex_disjoint_paths:
             i = 0
             while i < len(path) - 1:
@@ -74,10 +74,11 @@ class ResidualGraph:
     def getOutVertexIndex(self, index):
         return len(self.data) + index
 
+
 def main():
     k = 4
-    s = (5, 21.5)
-    t = (6, -1.5)
+    s = 1
+    t = 12
     points = [
         (3, 0.0), (3, 5.0), (3, 10.0), (3, 15.0), (3, 20.0), (5.5, 0.0), (5.5, 5.0), (5.5, 10.0), (5.5, 15.0),
         (5.5, 20.0), (8.0, 0.0), (8.0, 5.0), (8.0, 10.0), (8.0, 15.0), (8.0, 20.0), (10.5, 2.0), (10.5, 5.0),
@@ -86,6 +87,13 @@ def main():
     print(r1.getUindex())
     print(r1.getVindex())
     print(r1.getOutVertexIndex(5))
+    nx.draw_networkx(r1.getResidualGraph(), edge_color='black')
+    plt.draw()
+    plt.show()
+    print(list(nx.node_disjoint_paths(r1.getResidualGraph(), r1.getUindex(), r1.getVindex())))
+    print(r1.getResidualGraph().out_edges(46))
+    print(r1.getResidualGraph().in_edges(47))
+
 
 
 if __name__ == '__main__':
