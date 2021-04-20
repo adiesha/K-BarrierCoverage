@@ -65,6 +65,15 @@ class ResidualGraph:
     def getgprime(self):
         return self.Gp
 
+    def getUindex(self):
+        return 2 * len(self.data) + 2 - 1 - 1
+
+    def getVindex(self):
+        return 2 * len(self.data) + 2 - 1
+
+    def getOutVertexIndex(self, index):
+        return len(self.data) + index
+
 def main():
     k = 4
     s = (5, 21.5)
@@ -74,6 +83,9 @@ def main():
         (5.5, 20.0), (8.0, 0.0), (8.0, 5.0), (8.0, 10.0), (8.0, 15.0), (8.0, 20.0), (10.5, 2.0), (10.5, 5.0),
         (10.5, 7.0), (10.5, 10.0), (10.5, 12.0), (10.5, 15.0), (10.5, 17.0), (10.5, 18.0)]
     r1 = ResidualGraph(points, s, t, k)
+    print(r1.getUindex())
+    print(r1.getVindex())
+    print(r1.getOutVertexIndex(5))
 
 
 if __name__ == '__main__':
