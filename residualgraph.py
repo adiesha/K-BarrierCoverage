@@ -62,6 +62,8 @@ class ResidualGraph:
     def getResidualGraph(self):
         return self.residualG
 
+    def getgprime(self):
+        return self.Gp
 
 def main():
     k = 4
