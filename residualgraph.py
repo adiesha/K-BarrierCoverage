@@ -53,10 +53,12 @@ class ResidualGraph:
         # print(len(list(nx.node_disjoint_paths(self.Gp, un, vn))))
 
         vertex_disjoint_paths = list(nx.node_disjoint_paths(self.Gp, un, vn))
+        print(vertex_disjoint_paths)
         for path in vertex_disjoint_paths:
             i = 0
             while i < len(path) - 1:
-                self.Gp.remove_edge(path[i], path[i + 1])
+                self.residualG.remove_edge(path[i], path[i + 1])
+                self.residualG.add_edge(path[i+1], path[i])
                 i = i + 1
 
     def getResidualGraph(self):
@@ -90,10 +92,16 @@ def main():
     nx.draw_networkx(r1.getResidualGraph(), edge_color='black')
     plt.draw()
     plt.show()
-    print(list(nx.node_disjoint_paths(r1.getResidualGraph(), r1.getUindex(), r1.getVindex())))
-    print(r1.getResidualGraph().out_edges(46))
-    print(r1.getResidualGraph().in_edges(47))
+    # print(list(nx.node_disjoint_paths(r1.getResidualGraph(), r1.getUindex(), r1.getVindex())))
+    # print(r1.getResidualGraph().out_edges(46))
+    # print(r1.getResidualGraph().in_edges(47))
 
+    print("------------------")
+    for i in range(23):
+        print(r1.getResidualGraph().in_edges(i))
+
+    print("++++++++++")
+    print(r1.getResidualGraph().in_edges(0))
 
 
 if __name__ == '__main__':
