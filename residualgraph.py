@@ -1,7 +1,6 @@
 import networkx as nx
 import numpy as np
 from scipy.spatial import KDTree
-import matplotlib.pyplot as plt
 
 
 class ResidualGraph:
@@ -19,6 +18,36 @@ class ResidualGraph:
     def initialize(self):
         try:
             self.tree = KDTree(self.data)
+
+            # Construction of G
+            self.G = nx.DiGraph()
+            self.G.add_nodes_from(np.arange(len(self.data) + 2))
+            index = 0
+            for a in self.data:
+                neighbors = self.tree.query_ball_point(a, r=self.k)
+                print(neighbors)
+                for n in neighbors:
+                    if n == index:
+                        continue
+                    self.G.add_edge(index, n)
+                    self.G.add_edge(n, index)
+                index = index + 1
+
+            gun = len(self.data) + 2 - 1 - 1
+            gvn = len(self.data) + 2 - 1
+
+            index = 0
+            for p in self.data:
+                if p[0] - self.s <= self.k / 2:
+                    print(p)
+                    self.G.add_edge(gun, index)
+
+                if self.t - p[0] <= self.k / 2:
+                    print(p)
+                    self.G.add_edge(index, gvn)
+                index = index + 1
+
+            self.G = self.G.to_directed()
 
             # G prime construction
             self.Gp.add_nodes_from(np.arange(2 * len(self.data) + 2))
@@ -66,7 +95,6 @@ class ResidualGraph:
 
     def getResidualGraph(self):
         return self.residualG
-        
 
     def getgprime(self):
         return self.Gp
@@ -76,6 +104,12 @@ class ResidualGraph:
 
     def getVindex(self):
         return 2 * len(self.data) + 2 - 1
+
+    def getUindexofG(self):
+        return len(self.data) + 2 - 1 - 1
+
+    def getVindexOfG(self):
+        return len(self.data) + 2 - 1
 
     def getOutVertexIndex(self, index):
         return len(self.data) + index
