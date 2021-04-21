@@ -1,3 +1,4 @@
+import random
 class generateDisks:
 	def __init__(self):
 		self.disks = None
@@ -28,6 +29,20 @@ class generateDisks:
 				else:
 					disks.append((x, y * unitDistance * 2.5))
 			x += unitDistance * 1.25
+		self.disks = disks
+		return disks
+
+	# generate a set d random disks
+	# d - the number of disks disks
+	# belt - tuple representing the placement x-coordinate of the two parallel belts
+	# unitDistance = unit distance of disks
+	def generateRandomUnitDisks(self, d, belt, unitDistance):
+		self.belt = belt
+		disks = [] 
+		for i in range(d):
+			x = int(random.random() * (belt[1] - belt[0] - unitDistance)) + belt[0] + unitDistance
+			y = int(random.random() * 5) - 2
+			disks.append((x, y))
 		self.disks = disks
 		return disks
 

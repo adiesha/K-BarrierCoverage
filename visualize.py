@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import networkx as nx
 class visualize:
 	def __init__(self):
 		pass
@@ -13,4 +14,9 @@ class visualize:
 		ax.add_patch(plt.Rectangle(belts[0][0], belts[0][1], belts[0][2], color='r'))
 		ax.add_patch(plt.Rectangle(belts[1][0], belts[1][1], belts[1][2], color='r'))
 		ax.margins(0.5, 0.5) 
+		plt.show()
+
+	def visualizeGraph(self, residualGraph):
+		nx.draw_networkx(residualGraph, edge_color='black')
+		plt.draw()
 		plt.show()
