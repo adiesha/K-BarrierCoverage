@@ -58,7 +58,7 @@ class ResidualGraph:
             i = 0
             while i < len(path) - 1:
                 self.residualG.remove_edge(path[i], path[i + 1])
-                self.residualG.add_edge(path[i+1], path[i])
+                self.residualG.add_edge(path[i + 1], path[i])
                 i = i + 1
 
     def getResidualGraph(self):
@@ -75,7 +75,6 @@ class ResidualGraph:
 
     def getOutVertexIndex(self, index):
         return len(self.data) + index
-
 
 # def main():
 #     k = 4
@@ -102,6 +101,12 @@ class ResidualGraph:
 
 #     # print("++++++++++")
 #     # print(r1.getResidualGraph().in_edges(0))
+#
+#     print(len(minimum_st_node_cut(r1.getResidualGraph(), 46, 47)))
+#     print(minimum_st_node_cut(r1.getResidualGraph(), 46, 47))
+#
+#     print(len(minimum_st_node_cut(r1.getgprime(), 46, 47)))
+#     print(minimum_st_node_cut(r1.getgprime(), 46, 47))
 
 
 # if __name__ == '__main__':
