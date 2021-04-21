@@ -17,52 +17,56 @@ class ResidualGraph:
         self.initialize()
 
     def initialize(self):
-        self.tree = KDTree(self.data)
+        try:
+            self.tree = KDTree(self.data)
 
-        # G prime construction
-        self.Gp.add_nodes_from(np.arange(2 * len(self.data) + 2))
+            # G prime construction
+            self.Gp.add_nodes_from(np.arange(2 * len(self.data) + 2))
 
-        index = 0
-        for a in self.data:
-            # connect vin and vout
-            self.Gp.add_edge(index, len(self.data) + index)
+            index = 0
+            for a in self.data:
+                # connect vin and vout
+                self.Gp.add_edge(index, len(self.data) + index)
 
-            neighbors = self.tree.query_ball_point(a, r=self.k)
-            # print(str(index) + ":" + str(neighbors))
-            for n in neighbors:
-                self.Gp.add_edge(len(self.data) + index, n)
-            index = index + 1
+                neighbors = self.tree.query_ball_point(a, r=self.k)
+                # print(str(index) + ":" + str(neighbors))
+                for n in neighbors:
+                    self.Gp.add_edge(len(self.data) + index, n)
+                index = index + 1
 
-        un = 2 * len(self.data) + 2 - 1 - 1
-        vn = 2 * len(self.data) + 2 - 1
+            un = 2 * len(self.data) + 2 - 1 - 1
+            vn = 2 * len(self.data) + 2 - 1
 
-        # neighbors = self.tree.query_ball_point(self.s, r=self.k)
-        index = 0
-        for p in self.data:
-            if p[0] - self.s <= self.k / 2:
-                print(p)
-                self.Gp.add_edge(un, index)
+            # neighbors = self.tree.query_ball_point(self.s, r=self.k)
+            index = 0
+            for p in self.data:
+                if p[0] - self.s <= self.k / 2:
+                    print(p)
+                    self.Gp.add_edge(un, index)
 
-            if self.t - p[0] <= self.k / 2:
-                print(p)
-                self.Gp.add_edge(len(self.data) + index, vn)
-            index = index + 1
+                if self.t - p[0] <= self.k / 2:
+                    print(p)
+                    self.Gp.add_edge(len(self.data) + index, vn)
+                index = index + 1
 
-        self.residualG = self.Gp.copy()
-        # print(list(nx.node_disjoint_paths(self.Gp, un, vn)))
-        # print(len(list(nx.node_disjoint_paths(self.Gp, un, vn))))
+            self.residualG = self.Gp.copy()
+            # print(list(nx.node_disjoint_paths(self.Gp, un, vn)))
+            # print(len(list(nx.node_disjoint_paths(self.Gp, un, vn))))
 
-        vertex_disjoint_paths = list(nx.node_disjoint_paths(self.Gp, un, vn))
-        print("Vertex Disjoint Paths: " + str(len(vertex_disjoint_paths)))
-        for path in vertex_disjoint_paths:
-            i = 0
-            while i < len(path) - 1:
-                self.residualG.remove_edge(path[i], path[i + 1])
-                self.residualG.add_edge(path[i + 1], path[i])
-                i = i + 1
+            vertex_disjoint_paths = list(nx.node_disjoint_paths(self.Gp, un, vn))
+            print("Vertex Disjoint Paths: " + str(len(vertex_disjoint_paths)))
+            for path in vertex_disjoint_paths:
+                i = 0
+                while i < len(path) - 1:
+                    self.residualG.remove_edge(path[i], path[i + 1])
+                    self.residualG.add_edge(path[i + 1], path[i])
+                    i = i + 1
+        except:
+            print("Vertex Disjoint Paths: 0")
 
     def getResidualGraph(self):
         return self.residualG
+        
 
     def getgprime(self):
         return self.Gp

@@ -1,5 +1,10 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+
+# import networkx as nx
+# import pylab as plt
+from networkx.drawing.nx_agraph import graphviz_layout, to_agraph
+import pygraphviz as pgv
 class visualize:
 	def __init__(self):
 		pass
@@ -17,6 +22,6 @@ class visualize:
 		plt.show()
 
 	def visualizeGraph(self, residualGraph):
-		nx.draw_networkx(residualGraph, edge_color='black')
-		plt.draw()
-		plt.show()
+		A = to_agraph(residualGraph)
+		A.layout('dot')
+		A.draw('graph.png')

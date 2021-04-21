@@ -8,7 +8,7 @@ unitDistance = 2
 s = 1
 t = 12
 belts = (s, t)
-k = 9
+k = 2
 # generate optimal k-coverage disk set
 disks = gd.generateUnitDisks(k, belts, unitDistance)
 
