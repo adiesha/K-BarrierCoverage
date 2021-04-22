@@ -1,3 +1,4 @@
+from DS import DS
 from generateDisks import generateDisks
 from visualize import visualize
 from residualgraph import ResidualGraph
@@ -29,4 +30,24 @@ r1 = ResidualGraph(disks, s, t, unitDistance * 2)
 r_Graph = r1.getResidualGraph()
 
 # visualize residual graph
-vis.visualizeGraph(r_Graph)
+# vis.visualizeGraph(r_Graph)
+
+# vis.visualizeGraph(r1.G)
+print(list(r1.G.successors(8)))
+
+ds = DS(r1.G, r1.getUindexofG())
+print(ds.IN)
+print(ds.OUT)
+
+print(ds.query(4))
+print(ds.query(4))
+
+print(ds.IN)
+print(ds.OUT)
+
+ds.remove(3)
+
+print(ds.IN)
+print(ds.OUT)
+
+print(ds.query(1))
