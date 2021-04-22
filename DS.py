@@ -1,7 +1,9 @@
 class DS:
-    def __init__(self, G, removeNode):
+    def __init__(self, G, removeNodes):
         self.nodes = list(G.nodes)
-        self.nodes.remove(removeNode)
+
+        output = [i for i in self.nodes if i not in removeNodes]
+        self.nodes = output
 
         self.OUT = {}
         self.IN = {}
