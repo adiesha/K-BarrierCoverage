@@ -35,7 +35,7 @@ r_Graph = r1.getResidualGraph()
 # vis.visualizeGraph(r1.G)
 print(list(r1.G.successors(8)))
 
-ds = DS(r1.G, r1.getUindexofG())
+ds = DS(r1.G, [r1.getUindexofG(), 9])
 print(ds.IN)
 print(ds.OUT)
 
@@ -51,3 +51,8 @@ print(ds.IN)
 print(ds.OUT)
 
 print(ds.query(1))
+
+print(r1.disjoint_paths)
+p, v = r1.preprocessEdgedisjointpaths(r1.disjoint_paths, r1.getUindex(), r1.getVindex())
+print(p)
+print(v)

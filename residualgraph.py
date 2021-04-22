@@ -13,6 +13,11 @@ class ResidualGraph:
         self.Gp = nx.DiGraph()
         self.residualG = nx.DiGraph()
         self.tree = None
+        self.depth = np.arange(2 * len(data) + 2)
+        self.layer = []
+        self.disjoint_paths = None
+        self.prev = None
+        self.next = None
         self.initialize()
 
     def initialize(self):
@@ -83,6 +88,7 @@ class ResidualGraph:
             # print(len(list(nx.node_disjoint_paths(self.Gp, un, vn))))
 
             vertex_disjoint_paths = list(nx.node_disjoint_paths(self.Gp, un, vn))
+            self.disjoint_paths = vertex_disjoint_paths
             print("Vertex Disjoint Paths: " + str(len(vertex_disjoint_paths)))
             for path in vertex_disjoint_paths:
                 i = 0
@@ -90,6 +96,13 @@ class ResidualGraph:
                     self.residualG.remove_edge(path[i], path[i + 1])
                     self.residualG.add_edge(path[i + 1], path[i])
                     i = i + 1
+
+            # preprocess the G'
+            self.prev, self.next = self.preprocessEdgedisjointpaths(vertex_disjoint_paths, self.getUindex(),
+                                                                    self.getVindex())
+
+
+
         except:
             print("Vertex Disjoint Paths: 0")
 
@@ -113,6 +126,24 @@ class ResidualGraph:
 
     def getOutVertexIndex(self, index):
         return len(self.data) + index
+
+    def calculateLayers(self):
+        print("hello")
+
+    def preprocessEdgedisjointpaths(self, paths, u, v):
+        prev = {}
+        next = {}
+        for path in paths:
+            index = 0
+            for i in path:
+                if i == u or i == v:
+                    index = index + 1
+                    continue
+                else:
+                    prev[i] = path[index - 1]
+                    next[i] = path[index + 1]
+                    index = index + 1
+        return prev, next
 
 # def main():
 #     k = 4
