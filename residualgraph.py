@@ -161,6 +161,7 @@ class ResidualGraph:
                                 graph.layers[i] = []
                             graph.layers[i].append(graph.prev[vin])
             else:
+                Uprime = []
                 for vout in graph.layers[i-1]:
                     if vout not in graph.prev:
                         uin = graph.next[vout]
@@ -168,6 +169,16 @@ class ResidualGraph:
                         if not graph.layers[i]:
                             graph.layers[i] = []
                         graph.layers[i].append(uin)
+                    else:
+                        l = DS.querywithlist(vout)
+                        for item in l:
+                            DS.remove(item)
+                        Uprime = Uprime + l
+                        for item in Uprime:
+                            graph.depth[item] = i
+                            if not graph.layers[i]:
+                                graph.layers[i] = []
+                            graph.layers[i].append(item)
 
 
     def preprocessEdgedisjointpaths(self, paths, u, v):
