@@ -127,8 +127,48 @@ class ResidualGraph:
     def getOutVertexIndex(self, index):
         return len(self.data) + index
 
-    def calculateLayers(self):
-        print("hello")
+    def calculateLayers(self, graph, DS, s, t, prev, next):
+        G = graph.G
+        graph.layers = []
+        graph.layers[0] = [s]
+        graph.depth[s] = 0
+
+        Uprime = []
+        while DS.hasNext(s):
+            Uprime.append(DS.query(s))
+
+        UprimeIn = Uprime.copy()
+        UprimeprimeIn = []
+        for v in UprimeIn:
+            if v in graph.prev and graph.prev[v] == s:
+                UprimeprimeIn.append(v)
+
+        graph.layers[1] = UprimeprimeIn.copy()
+
+        i = 2
+        while graph.layers[i - 1] and t not in graph.layers[i - 1]:
+            if i % 2 == 0:
+                for vin in graph.layers[i - 1]:
+                    if vin not in graph.prev:
+                        graph.depth[graph.getOutVertexIndex(vin)] = i
+                        if not graph.layers[i]:
+                            graph.layers[i] = []
+                        graph.layers[i].append(graph.getOutVertexIndex(vin))
+                    else:
+                        if graph.prev[vin] != s:
+                            graph.depth[graph.prev[vin]] = i
+                            if not graph.layers[i]:
+                                graph.layers[i] = []
+                            graph.layers[i].append(graph.prev[vin])
+            else:
+                for vout in graph.layers[i-1]:
+                    if vout not in graph.prev:
+                        uin = graph.next[vout]
+                        graph.depth[uin] = i
+                        if not graph.layers[i]:
+                            graph.layers[i] = []
+                        graph.layers[i].append(uin)
+
 
     def preprocessEdgedisjointpaths(self, paths, u, v):
         prev = {}

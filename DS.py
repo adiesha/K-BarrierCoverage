@@ -19,6 +19,18 @@ class DS:
         else:
             return None
 
+    def querywithlist(self, v):
+        if self.OUT[v]:
+            return self.OUT[v]
+        else:
+            return None
+
+    def hasNext(self, v):
+        if self.OUT[v]:
+            return True
+        else:
+            return False
+
     def remove(self, u):
         for i in self.IN[u]:
             self.OUT[i].remove(u)
