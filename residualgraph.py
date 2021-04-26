@@ -30,7 +30,7 @@ class ResidualGraph:
             index = 0
             for a in self.data:
                 neighbors = self.tree.query_ball_point(a, r=self.k)
-                print(neighbors)
+                # print(neighbors)
                 for n in neighbors:
                     if n == index:
                         continue
@@ -44,11 +44,11 @@ class ResidualGraph:
             index = 0
             for p in self.data:
                 if p[0] - self.s <= self.k / 2:
-                    print(p)
+                    # print(p)
                     self.G.add_edge(gun, index)
 
                 if self.t - p[0] <= self.k / 2:
-                    print(p)
+                    # print(p)
                     self.G.add_edge(index, gvn)
                 index = index + 1
 
@@ -75,11 +75,11 @@ class ResidualGraph:
             index = 0
             for p in self.data:
                 if p[0] - self.s <= self.k / 2:
-                    print(p)
+                    # print(p)
                     self.Gp.add_edge(un, index)
 
                 if self.t - p[0] <= self.k / 2:
-                    print(p)
+                    # print(p)
                     self.Gp.add_edge(len(self.data) + index, vn)
                 index = index + 1
 
